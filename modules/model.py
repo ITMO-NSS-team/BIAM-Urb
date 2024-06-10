@@ -13,6 +13,14 @@ class UrbAssistant:
     """
 
     def __init__(self, model_name: str, device_map: str = 'auto', max_new_tokens: int = 4096, **kwargs) -> None:
+        """Initialize LLM and tokenizer for assistant.
+
+        Args:
+            model_name (str): Model name for initialization.
+            device_map (str, optional): Device for computation. Defaults to 'auto'.
+            max_new_tokens (int, optional): The maximum numbers of tokens to generate, 
+            ignoring the number of tokens in the prompt. Defaults to 4096.
+        """
         load_dotenv(ROOT / 'config.env')
         self._max_new_tokens = max_new_tokens
         self._system_prompt = None
