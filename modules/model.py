@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from modules.definitions import ROOT
+from modules.rag.loading import chroma_loading
 
 
 class UrbAssistant:
@@ -33,7 +34,10 @@ class UrbAssistant:
 
     def set_sys_prompt(self, new_prompt: str) -> None:
         self._system_prompt = new_prompt
-
+        
+    def init_retirever(self, pth: str, collection_name: str):
+        chroma_loading(pth=pth, collection_name=collection_name)
+        
     def __call__(self,
                  user_question: str,
                  temperature: float = .8,

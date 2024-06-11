@@ -8,6 +8,7 @@
 	"settings": {
 		"files.autoSave": "afterDelay",
 		"python.analysis.autoImportCompletions": true,
+		"python.analysis.extraPaths": ["${workspaceFolder", "${"],
 		"editor.cursorStyle": "line",
 		"git.autofetch": false
 	},
@@ -23,7 +24,7 @@
 				"console": "integratedTerminal",
 				"justMyCode": false,
 				"env": {
-					"PYTHONPATH": "${workspaceFolder}"
+					"PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}"
 				}
 				
 			},
