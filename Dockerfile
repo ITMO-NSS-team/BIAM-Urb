@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 COPY ./ /code/
 
-CMD ["fastapi", "run", "/code/main.py", "--port", "80"]
+CMD ["fastapi", "run", "/code/main.py", "--proxy-headers", "--port", "80"]
