@@ -1,11 +1,17 @@
 from typing import Union
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 import chromadb
 from chromadb.utils.embedding_functions import HuggingFaceEmbeddingServer
 
 chroma_client = chromadb.HttpClient(host='10.32.1.34', port=9941)
 ef = HuggingFaceEmbeddingServer(url="http://10.32.1.34:9942/embed")
+
+
+class Question(BaseModel):
+    question_body: str
+
 
 app = FastAPI()
 
@@ -21,10 +27,10 @@ def read_item(item_id: int, q: Union[str, None] = None):
 
 
 @app.post("/question")
-def read_item(question: str):
+def read_item(question: Question):
     collection = chroma_client.get_collection("my_collection2", embedding_function=ef)
     results = collection.query(
-        query_texts=[question],  # Chroma will embed this for you
+        query_texts=[question.question_body],  # Chroma will embed this for you
         n_results=2  # how many results to return
     )
-    return {'res': results}
+    return results
