@@ -4,6 +4,11 @@
 
 ## Собрать образ для пайплайна с RAG и запустить контейнер:
 
+Создать `config.env` в корне проекта:
+```
+SAIGA_URL=http://10.32.2.2:8672/generate
+```
+
 Создать на сервере переменную окружения `$NSS_NPA_TOKEN` (гитхаб токен для пользователя `nss-npa`)
 ```
 git clone https://github.com/ITMO-NSS-team/BIAM-Urb.git
