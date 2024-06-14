@@ -1,13 +1,10 @@
-from typing import Union
 from fastapi import FastAPI
 from pydantic import BaseModel
+from transformers import BitsAndBytesConfig
 
 from chroma_rag.loading import ChromaConnector
-
-# import chromadb
-# from chromadb.utils.embedding_functions import HuggingFaceEmbeddingServer
-# chroma_client = chromadb.HttpClient(host='10.32.1.34', port=9941)
-# ef = HuggingFaceEmbeddingServer(url="http://10.32.1.34:9942/embed")
+from modules.model import UrbAssistant
+from modules.standard_prompt import standard_sys_prompt
 
 
 class Question(BaseModel):
@@ -29,15 +26,15 @@ app = FastAPI()
 
 @app.post("/question")
 def read_item(question: Question):
-    # collection = chroma_client.get_collection("my_collection2", embedding_function=ef)
-    # results = collection.query(
-    #     query_texts=[question.question_body],  # Chroma will embed this for you
-    #     n_results=2  # how many results to return
-    # )
-
     collection_name = 'strategy'
     chroma_inst = ChromaConnector()
     res = chroma_inst.chroma_view(question.question_body, collection_name)
     context = res[0][0].page_content
-    # return res[0][0].page_content
+
+    # bnb_config = BitsAndBytesConfig(load_in_8bit=True, llm_int8_enable_fp32_cpu_offload=True)
+    # assistant = UrbAssistant('meta-llama/Meta-Llama-3-8B-Instruct', quantization_config=bnb_config)
+    # assistant.set_sys_prompt(standard_sys_prompt)
+    # user_message = f'Question:{question.question_body}\nContext:{context}'
+    # ans = assistant(user_message, temperature=0.015, top_p=.05)
+    # return {"answer": ans.split('ANSWER: ')[-1]}
     return context
