@@ -7,7 +7,11 @@
 	],
 	"settings": {
 		"files.autoSave": "afterDelay",
-		"terminal.integrated.env.linux": {"PYTHONPATH": "${workspaceFolder}"},
+		"terminal.integrated.cwd": "${workspaceFolder}",
+		"terminal.integrated.splitCwd": "workspaceRoot",
+		"python.defaultInterpreterPath": "${env:PYTHONPATH}",
+		"terminal.integrated.env.linux": {"PYTHONPATH": "${workspaceFolder}:${workspaceFolder}${pathSeparator}modules:${workspaceFolder}${pathSeparator}experiments"},
+		"terminal.integrated.env.windows": {"PYTHONPATH": "${workspaceFolder}"},
 		"python.analysis.autoImportCompletions": true,
 		"python.analysis.extraPaths": ["${workspaceFolder}"],
 		"editor.cursorStyle": "line",

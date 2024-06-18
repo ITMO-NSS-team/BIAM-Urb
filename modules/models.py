@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import requests
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from modules.definitions import ROOT
+from modules.definitions import ROOT, SYS_PROMPT
 from modules.rag.loading import chroma_loading
 
 
@@ -26,7 +26,7 @@ class UrbAssistant:
         """
         load_dotenv(ROOT / 'config.env')
         self._max_new_tokens = max_new_tokens
-        self._system_prompt = None
+        self._system_prompt = SYS_PROMPT
         self._database = None  # Database for RAG ## TODO
 
         self._tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -88,8 +88,7 @@ class WebAssistant:
         Initialize an instanse of LLM assistant.
         """
         load_dotenv(ROOT / 'config.env')
-        self._system_prompt = None
-        self._context = None
+        self._system_prompt = SYS_PROMPT
         self._url = os.environ.get('SAIGA_URL')
 
     def set_sys_prompt(self, new_prompt: str) -> None:
@@ -100,15 +99,8 @@ class WebAssistant:
         """
         self._system_prompt = new_prompt
 
-    def add_context(self, context: str) -> None:
-        """Add a context to model's prompt
-
-        Args:
-            context (str): context related to question.
-        """
-        self._context = context
-
     def __call__(self, user_question: str,
+                 context: str = "",
                  temperature: float = .015,
                  top_p: float = .5,
                  *args: Any,
@@ -117,6 +109,7 @@ class WebAssistant:
 
         Args:
             user_question (str): A user's prompt. Question that requires an answer.
+            context (str): Additional information, which can be used for the answer.
             temperature (float, optional): Generation temperature. 
             The higher ,the less stable answers will be. Defaults to 0.015.
             top_p (float, optional): Nuclear sampling. Selects the most likely tokens from a probability distribution, 
@@ -127,11 +120,11 @@ class WebAssistant:
         """
         formatted_prompt = {'system': self._system_prompt,
                             'user': user_question,
-                            'context': self._context,
+                            'context': context,
                             'temperature': temperature,
                             'top_p': top_p}
         response = requests.post(url=self._url, json=formatted_prompt)
-        if kwargs.get('as_json'):
+        if kwargs.get('as_json', True):
             return json.loads(response.text)['response']
         else:
             return response.text

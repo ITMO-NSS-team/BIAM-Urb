@@ -1,0 +1,10 @@
+{
+    "files.autoSave": "afterDelay",
+    "python.defaultInterpreterPath": "${env:PYTHONPATH}",
+    "terminal.integrated.env.linux": {"PYTHONPATH": "${workspaceFolder}:${workspaceFolder}${pathSeparator}tests:${workspaceFolder}${pathSeparator}experiments"},
+    "terminal.integrated.env.windows": {"PYTHONPATH": "${workspaceFolder};${workspaceFolder}${pathSeparator}tests;${workspaceFolder}${pathSeparator}experiments"},
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.extraPaths": ["${workspaceFolder}"],
+    "editor.cursorStyle": "line",
+    "git.autofetch": false,
+}
