@@ -1,7 +1,5 @@
 from transformers import BitsAndBytesConfig
-
-from modules.definitions import ROOT
-from modules.model import UrbAssistant
+from model import UrbAssistant
 
 
 if __name__ == '__main__':

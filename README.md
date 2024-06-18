@@ -11,14 +11,16 @@ SAIGA_URL=http://10.32.2.2:8672/generate
 
 Создать на сервере переменную окружения `$NSS_NPA_TOKEN` (гитхаб токен для пользователя `nss-npa`)
 ```
+cd /var/essdata/llm/project
 git clone https://github.com/ITMO-NSS-team/BIAM-Urb.git
 git checkout add_app_api_and_dockerfile
 git pull
 
 cd BIAM-Urb
+docker container stop llm_city_app-container 
+docker container rm llm_city_app-container 
 docker image rm llm_city_app
 docker build -t llm_city_app --build-arg NSS_NPA_TOKEN=$NSS_NPA_TOKEN .
-docker container rm llm_city_app-container 
 docker run -d -p 9951:80 --name llm_city_app-container llm_city_app
 ```
 
@@ -30,7 +32,7 @@ curl -v POST http://10.32.1.34:9951/question -H 'Content-Type: application/json'
 ```
 В браузере:
 ```
-http://10.32.1.34:9951/docs#/
+http://10.32.1.34:9951/docs/
 ```
 
 ## Тестировать апи локально:
@@ -47,4 +49,13 @@ curl -v POST http://0.0.0.0:80/question -H 'Content-Type: application/json' -d '
 В браузере:
 ```
 http://localhost/docs#/
+```
+
+## Запустить ChromaDB и модель эмбеддинга на сервере
+
+Скопировать на сервер [compose.yaml](docker/chroma/compose.yaml)
+
+Выполнить команду:
+```
+docker compose up
 ```

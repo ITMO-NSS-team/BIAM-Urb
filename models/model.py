@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from modules.definitions import ROOT
+from models.definitions import ROOT
 
 
 class UrbAssistant:
