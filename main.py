@@ -7,7 +7,7 @@ from models.standard_prompt import standard_sys_prompt
 
 
 class Question(BaseModel):
-    question_body: str
+    question_body: str = 'Какие проблемы демографического развития Санкт-Петербурга?'
 
 
 app = FastAPI()
