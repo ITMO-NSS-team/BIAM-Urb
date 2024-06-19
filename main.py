@@ -11,20 +11,16 @@ class Question(BaseModel):
     chunk_num: int = 3
     territory_name_id: str = 'Санкт-Петербург'
     territory_type: str = 'city'
-    user_selection_zone: dict = {
-    "coordinates": [
+    user_selection_zone: list = [
       [
         [
-          30.184679,
-          59.954721
+          30.184679, 59.954721
         ],
         [
-          30.184727,
-          59.954813
+          30.184727, 59.954813
         ]
       ]
     ]
-    }
 
 
 app = FastAPI()
@@ -38,7 +34,7 @@ async def read_item(question: Question):
         chunk_num (int): number of chunks that will be returned by the DB and used as a context
         territory_name_id (str): name of the territory
         territory_type (str): type of the territory
-        user_selection_zone (dict): coordinates of the territory
+        user_selection_zone (list): coordinates of the territory
 
     Returns:
         dict: llm_res - pipeline's answer to the user's question, context_list - context returned by DB
@@ -50,9 +46,6 @@ async def read_item(question: Question):
     for ind, chunk in enumerate(res):
         context = f'{context}Отрывок {ind}: {chunk[0].page_content} '
         context_list.append(chunk[0].page_content)
-
-    print(question.user_selection_zone)
-    print(type(question.user_selection_zone))
 
     # model = WebAssistant()
     # model.set_sys_prompt(standard_sys_prompt)
