@@ -38,5 +38,5 @@ def load_data(idx: int, top_n: Optional[int] = None) -> Dict:
 
 if __name__ == "__main__":
     # TODO move to unit tests
-    tst = load_geojson_data(1)
+    tst = load_data(1)
     print('test')
