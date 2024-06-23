@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 import chroma_rag.loading as chroma_connector
 from models.web_api import WebAssistant
@@ -24,6 +25,19 @@ class Question(BaseModel):
 
 
 app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post('/question')
 async def read_item(question: Question):
