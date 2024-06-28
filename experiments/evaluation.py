@@ -4,7 +4,7 @@ from deepeval.models.base_model import DeepEvalBaseLLM
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from modules.definitions import ROOT, SYS_PROMPT
+from modules.definitions import ROOT, GEOJSON_RULES
 
 
 class CustomLLMEval(DeepEvalBaseLLM):
@@ -14,7 +14,7 @@ class CustomLLMEval(DeepEvalBaseLLM):
 
     def __init__(self,
                  model: str,
-                 sys_prompt: str = SYS_PROMPT,
+                 sys_prompt: str = GEOJSON_RULES,
                  *args,
                  **kwargs):
         """Initialize instance with evaluation LLM.
@@ -46,8 +46,9 @@ class CustomLLMEval(DeepEvalBaseLLM):
         Returns:
             str: Model's response for user's question.
         """
+        usr_msg_template = prompt if context is None else f'Вопрос:{prompt} Контекст:{context}'
         formatted_message = [{'role': 'system', 'content': self._sys_prompt},
-                             {'role': 'user', 'content': f'Вопрос:{prompt} Контекст:{context}'}]
+                             {'role': 'user', 'content': usr_msg_template}]
         response = self.model.chat.completions.create(model=self._model_name,
                                                       messages=formatted_message,
                                                       temperature=temperature,

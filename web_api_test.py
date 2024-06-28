@@ -1,6 +1,6 @@
 import requests
 
-from modules.models import WebAssistant
+from modules.models import WebHostedLlm
 
 
 if __name__ == "__main__":
@@ -38,7 +38,7 @@ if __name__ == "__main__":
     сделанных в результате оценки достигнутых целей социально-экономического развития, и представлено в разрезе отраслей, 
     сфер и направлений социально-экономического развития Санкт-Петербурга."""
 
-    model = WebAssistant()
+    model = WebHostedLlm()
     model.set_sys_prompt(sys_prompt)
     model.add_context(context)
 
